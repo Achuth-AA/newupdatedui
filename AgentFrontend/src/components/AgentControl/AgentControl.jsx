@@ -87,22 +87,34 @@ function AgentControl({ activeSection }) {
     <div className="bg-gray-50 min-h-screen">
       {/* Alert Notifications */}
       <div className="px-6 pt-4 flex gap-4">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-3">
-          <div className="bg-red-100 rounded-full p-2">
-            <AlertTriangle className="w-5 h-5 text-red-600" />
+        <div className="relative bg-white border border-gray-300 rounded-full flex items-center cursor-pointer hover:shadow-lg transition-shadow overflow-hidden">
+          <div className="bg-red-500 px-4 py-3 rounded-l-full">
+            <div className="w-6 h-6"></div>
           </div>
-          <div className="flex flex-col">
-            <span className="text-red-800 font-bold">1 critical issue</span>
-            <span className="text-black">Immediate attention required</span>
+          <div className="px-4 py-2 flex items-center gap-3">
+            <div className="flex flex-col">
+              <span className="text-gray-800 font-semibold text-sm">Critical Issue</span>
+              <span className="text-gray-600 text-xs">Immediate attention required</span>
+            </div>
+            <span className="text-red-500 font-bold text-xl mx-2">1</span>
+            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </div>
         </div>
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 flex items-center gap-3">
-          <div className="bg-yellow-100 rounded-full p-2">
-            <CheckSquare className="w-5 h-5 text-yellow-600" />
+        <div className="relative bg-white border border-gray-300 rounded-full flex items-center cursor-pointer hover:shadow-lg transition-shadow overflow-hidden">
+          <div className="bg-orange-500 px-4 py-3 rounded-l-full">
+            <div className="w-6 h-6"></div>
           </div>
-          <div className="flex flex-col">
-            <span className="text-yellow-800 font-bold">2 pending tasks</span>
-            <span className="text-black">Immediate attention required</span>
+          <div className="px-4 py-2 flex items-center gap-3">
+            <div className="flex flex-col">
+              <span className="text-gray-800 font-semibold text-sm">Pending tasks</span>
+              <span className="text-gray-600 text-xs">Immediate attention required</span>
+            </div>
+            <span className="text-orange-500 font-bold text-xl mx-2">2</span>
+            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </div>
         </div>
       </div>
