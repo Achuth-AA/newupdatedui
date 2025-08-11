@@ -65,7 +65,7 @@ function Sidebar({ activeSection, setActiveSection}) {
             <FolderOpen className="w-5 h-5 text-white" />
           </div>
           <span className="text-white font-medium">
-            E-Commerce Platform v3.2
+            SCB 
           </span>
         </div>
 
@@ -73,8 +73,8 @@ function Sidebar({ activeSection, setActiveSection}) {
         <div className="mb-4">
           <div className="w-full bg-[#1e40af] rounded-full h-2">
             <div
-              className="bg-green-400 h-2 rounded-full transition-all duration-300"
-              style={{ width: "75%" }}
+              className="bg-amber-400 h-2 rounded-full transition-all duration-300"
+              style={{ width: "15%" }}
             ></div>
           </div>
         </div>
@@ -83,15 +83,19 @@ function Sidebar({ activeSection, setActiveSection}) {
         <div className="space-y-2 text-sm">
           <div className="flex justify-between items-center">
             <span className="text-blue-100">Test Progress:</span>
-            <span className="text-white font-medium">75%</span>
+            <span className="text-white font-medium">15%</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-blue-100">Your Tests:</span>
-            <span className="text-white font-medium">23/45 Complete</span>
+            <span className="text-white font-medium">6/45 Complete</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-blue-100">Environment:</span>
             <span className="text-white font-medium">Staging</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-blue-100">Sprint Version:</span>
+            <span className="text-white font-medium">12th Sprint</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-blue-100">Sprint End:</span>
