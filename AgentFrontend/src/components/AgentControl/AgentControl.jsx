@@ -298,8 +298,285 @@ function AgentControl({ activeSection }) {
 
         {activeTab === "tasks" && (
           <div className="space-y-6">
+            {/* Status Cards */}
+            <div className="grid grid-cols-4 gap-4">
+              {/* Pending Tasks */}
+              <div className="bg-white border border-gray-200 rounded-full py-3 shadow-sm hover:shadow-md transition-shadow cursor-pointer relative overflow-hidden">
+                <div className="absolute left-1 top-1 bottom-1 w-8 bg-blue-500 rounded-l-full"></div>
+                <div className="flex items-center justify-between px-4 relative z-10">
+                  <div className="flex items-center gap-2 ml-6">
+                    <div>
+                      <span className="text-xs text-blue-700 font-semibold">Pending Tasks</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="text-2xl font-bold text-blue-500">1</span>
+                    <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* In Progress */}
+              <div className="bg-white border border-gray-200 rounded-full py-3 shadow-sm hover:shadow-md transition-shadow cursor-pointer relative overflow-hidden">
+                <div className="absolute left-1 top-1 bottom-1 w-8 bg-orange-500 rounded-l-full"></div>
+                <div className="flex items-center justify-between px-4 relative z-10">
+                  <div className="flex items-center gap-2 ml-6">
+                    <div>
+                      <span className="text-xs text-orange-700 font-semibold">In Progress</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="text-2xl font-bold text-orange-500">1</span>
+                    <svg className="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Blocked */}
+              <div className="bg-white border border-gray-200 rounded-full py-3 shadow-sm hover:shadow-md transition-shadow cursor-pointer relative overflow-hidden">
+                <div className="absolute left-1 top-1 bottom-1 w-8 bg-red-500 rounded-l-full"></div>
+                <div className="flex items-center justify-between px-4 relative z-10">
+                  <div className="flex items-center gap-2 ml-6">
+                    <div>
+                      <span className="text-xs text-red-700 font-semibold">Blocked</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="text-2xl font-bold text-red-500">1</span>
+                    <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Completed */}
+              <div className="bg-white border border-gray-200 rounded-full py-3 shadow-sm hover:shadow-md transition-shadow cursor-pointer relative overflow-hidden">
+                <div className="absolute left-1 top-1 bottom-1 w-8 bg-green-500 rounded-l-full"></div>
+                <div className="flex items-center justify-between px-4 relative z-10">
+                  <div className="flex items-center gap-2 ml-6">
+                    <div>
+                      <span className="text-xs text-green-700 font-semibold">Completed</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="text-2xl font-bold text-green-500">1</span>
+                    <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <h2 className="text-2xl font-bold text-gray-900">Tasks & Workflows</h2>
-            <TaskOverview tasks={tasks} />
+            
+            {/* Task Cards Grid */}
+            <div className="grid grid-cols-2 gap-6">
+              {/* Blocked Task - Configure Load Testing Environment */}
+              <div className="bg-white rounded-3xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden border border-gray-200">
+                <div className="absolute left-1 top-1 bottom-1 w-10 bg-red-500 rounded-l-2xl"></div>
+                <div className="p-6 ml-8">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-red-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">Blocked</span>
+                      <span className="bg-gray-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">high</span>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Configure Load Testing Environment</h3>
+                  <p className="text-sm text-gray-600 mb-4">Setup and configuration of load testing environment - blocked by security review completion</p>
+                  
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="bg-blue-500 text-white text-xs font-medium px-3 py-2 rounded-full flex items-center gap-1">
+                      <span>⚠️</span>
+                      <span>Environment Readiness Agent</span>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 text-sm mb-4">
+                    <div>
+                      <span className="text-gray-500 text-xs">Due Date</span>
+                      <div className="font-medium text-gray-900">8/8/2025</div>
+                    </div>
+                    <div>
+                      <span className="text-gray-500 text-xs">Estimated</span>
+                      <div className="font-medium text-gray-900">6h</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <button className="flex items-center gap-1 text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3 py-2 rounded-xl transition-colors">
+                      <span className="text-gray-500">👁️</span>
+                      <span>View Output</span>
+                    </button>
+                    <button className="flex items-center gap-1 text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3 py-2 rounded-xl transition-colors">
+                      <span className="text-gray-500">📝</span>
+                      <span>Feedback</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Critical Task - Review Payment Gateway Security */}
+              <div className="bg-white rounded-3xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden border border-gray-200">
+                <div className="absolute left-1 top-1 bottom-1 w-10 bg-orange-500 rounded-l-2xl"></div>
+                <div className="p-6 ml-8">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-orange-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">Critical</span>
+                      <span className="bg-blue-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">needs approval</span>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Review payment gateway security test results</h3>
+                  <p className="text-sm text-gray-600 mb-4">Critical security vulnerabilities detected in payment flow</p>
+                  
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="bg-blue-500 text-white text-xs font-medium px-3 py-2 rounded-full flex items-center gap-1">
+                      <span>⚠️</span>
+                      <span>Test Failure Analysis Agent</span>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-4 text-sm mb-4">
+                    <div>
+                      <span className="text-gray-500 text-xs">Due Date</span>
+                      <div className="font-medium text-blue-600">August 9, 2025</div>
+                    </div>
+                    <div>
+                      <span className="text-gray-500 text-xs">Estimated</span>
+                      <div className="font-medium text-gray-900">4h</div>
+                    </div>
+                    <div>
+                      <span className="text-gray-500 text-xs">Actual</span>
+                      <div className="font-medium text-gray-900">2.5h</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <button className="flex items-center gap-1 text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-xl transition-colors">
+                      <span>✓</span>
+                      <span>Approve</span>
+                    </button>
+                    <button className="flex items-center gap-1 text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3 py-2 rounded-xl transition-colors">
+                      <span>✏️</span>
+                      <span>Request Revision</span>
+                    </button>
+                    <button className="flex items-center gap-1 text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3 py-2 rounded-xl transition-colors">
+                      <span>🚫</span>
+                      <span>Reject</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Medium Priority Task - Validate Mobile Regression */}
+              <div className="bg-white rounded-3xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden border border-gray-200">
+                <div className="absolute left-1 top-1 bottom-1 w-10 bg-blue-500 rounded-l-2xl"></div>
+                <div className="p-6 ml-8">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-blue-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">medium</span>
+                      <span className="bg-yellow-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">pending</span>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Validate Mobile Regression Test Cases</h3>
+                  <p className="text-sm text-gray-600 mb-4">Review and validate generated test cases for mobile application regression testing</p>
+                  
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="bg-blue-500 text-white text-xs font-medium px-3 py-2 rounded-full flex items-center gap-1">
+                      <span>⚠️</span>
+                      <span>Smart Test Review Agent</span>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 text-sm mb-4">
+                    <div>
+                      <span className="text-gray-500 text-xs">Due Date</span>
+                      <div className="font-medium text-gray-900">8/12/2025</div>
+                    </div>
+                    <div>
+                      <span className="text-gray-500 text-xs">Estimated</span>
+                      <div className="font-medium text-gray-900">8h</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <button className="flex items-center gap-1 text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-xl transition-colors">
+                      <span>▶️</span>
+                      <span>Start</span>
+                    </button>
+                    <button className="flex items-center gap-1 text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3 py-2 rounded-xl transition-colors">
+                      <span className="text-gray-500">👁️</span>
+                      <span>View Output</span>
+                    </button>
+                    <button className="flex items-center gap-1 text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3 py-2 rounded-xl transition-colors">
+                      <span className="text-gray-500">📝</span>
+                      <span>Feedback</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* High Priority Task - Review API Performance */}
+              <div className="bg-white rounded-3xl shadow-sm hover:shadow-md transition-shadow relative overflow-hidden border border-gray-200">
+                <div className="absolute left-1 top-1 bottom-1 w-10 bg-blue-500 rounded-l-2xl"></div>
+                <div className="p-6 ml-8">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-blue-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">high</span>
+                      <span className="bg-blue-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">in progress</span>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Review API Performance Test Results</h3>
+                  <p className="text-sm text-gray-600 mb-4">Analyze performance test results for API endpoints and identify bottlenecks</p>
+                  
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="bg-blue-500 text-white text-xs font-medium px-3 py-2 rounded-full flex items-center gap-1">
+                      <span>⚠️</span>
+                      <span>Test Execution Agent</span>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-4 text-sm mb-4">
+                    <div>
+                      <span className="text-gray-500 text-xs">Due Date</span>
+                      <div className="font-medium text-gray-900">8/12/2025</div>
+                    </div>
+                    <div>
+                      <span className="text-gray-500 text-xs">Estimated</span>
+                      <div className="font-medium text-gray-900">3h</div>
+                    </div>
+                    <div>
+                      <span className="text-gray-500 text-xs">Actual</span>
+                      <div className="font-medium text-gray-900">1.5h</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <button className="flex items-center gap-1 text-xs bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-xl transition-colors">
+                      <span>✓</span>
+                      <span>Complete</span>
+                    </button>
+                    <button className="flex items-center gap-1 text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3 py-2 rounded-xl transition-colors">
+                      <span className="text-gray-500">👁️</span>
+                      <span>View Output</span>
+                    </button>
+                    <button className="flex items-center gap-1 text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3 py-2 rounded-xl transition-colors">
+                      <span className="text-gray-500">📝</span>
+                      <span>Feedback</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 

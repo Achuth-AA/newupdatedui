@@ -1,6 +1,7 @@
-import { Eye, MessageSquare, MoreHorizontal, FileText } from "lucide-react";
+import { Eye, MessageSquare, Settings, FileText } from "lucide-react";
 import { useState, useEffect } from "react";
 import AgentOutput from "../AgentOutput";
+import AgentSettings from "../AgentSettings";
 import SummaryModal from "../SummaryModal";
 
 // Agent name mapping for API calls (display name to database name)
@@ -44,6 +45,7 @@ function AgentCard({ agent }) {
 
   const [showViewOutputModel, setShowViewOutputModel] = useState(false);
   const [showSummaryModal, setShowSummaryModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [agentMetrics, setAgentMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -183,8 +185,11 @@ function AgentCard({ agent }) {
           <FileText className="w-3.5 h-3.5" />
           Summary
         </button>
-        <button className="flex items-center justify-center px-1.5 py-1.5 text-gray-400 hover:text-gray-600 transition-colors">
-          <MoreHorizontal className="w-4 h-4" />
+        <button 
+          onClick={() => setShowSettingsModal(true)}
+          className="flex items-center justify-center px-1.5 py-1.5 text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <Settings className="w-4 h-4" />
         </button>
       </div>
 
@@ -194,6 +199,10 @@ function AgentCard({ agent }) {
 
       {showSummaryModal && (
         <SummaryModal onClose={setShowSummaryModal} agent={agent} />
+      )}
+
+      {showSettingsModal && (
+        <AgentSettings onClose={setShowSettingsModal} agent={agent} />
       )}
     </div>
   );

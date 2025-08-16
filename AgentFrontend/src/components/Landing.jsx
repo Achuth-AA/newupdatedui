@@ -19,6 +19,8 @@ function Landing() {
     "Work with your assigned AI testing agents and view outputs tasks"
   );
   const [chatText, setChatText] = useState("");
+  const [currentChatId, setCurrentChatId] = useState(null);
+  const [currentChat, setCurrentChat] = useState(null);
   const navigate = useNavigate();
 
   /* common redirect helper */
@@ -41,6 +43,21 @@ function Landing() {
       setAgentDescription(meta.description);
     }
     setActiveSection(section);
+  };
+
+  // Chat management functions
+  const handleNewChat = (newChat) => {
+    setCurrentChatId(newChat.id);
+    setCurrentChat(newChat);
+    // Navigate to chat page with new chat
+    navigate("/chat", { state: { newChat } });
+  };
+
+  const handleSelectChat = (chat) => {
+    setCurrentChatId(chat.id);
+    setCurrentChat(chat);
+    // Navigate to chat page with selected chat
+    navigate("/chat", { state: { selectedChat: chat } });
   };
 
   const navigateToMonitorCenter = (title) => {
@@ -109,24 +126,42 @@ function Landing() {
 
               {/* Alert Notifications */}
               <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto mb-6">
-                <div className="bg-red-50 border border-red-200 px-4 py-4 rounded-lg">
-                  <div className="flex items-center gap-3 mb-1">
-                    <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-                      <TriangleAlert className="w-5 h-5 text-red-600" />
+                <div className="bg-white border border-gray-200 rounded-full py-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer relative overflow-hidden">
+                  {/* Red half circle on the left with gap */}
+                  <div className="absolute left-1 top-1 bottom-1 w-10 bg-red-500 rounded-l-full"></div>
+                  <div className="flex items-center justify-between px-6 relative z-10">
+                    <div className="flex items-center gap-4 ml-8">
+                      <div>
+                        <span className="text-sm text-red-700 font-semibold">Critical issue</span>
+                        <div className="text-xs text-gray-800">Immediate attention required</div>
+                      </div>
                     </div>
-                    <span className="text-sm text-red-700 font-medium">1 critical issue</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-3xl font-bold text-red-500">1</span>
+                      <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </div>
-                  <div className="text-xs text-red-600 pl-11">Immediate attention required</div>
                 </div>
                 
-                <div className="bg-yellow-50 border border-yellow-200 px-4 py-4 rounded-lg">
-                  <div className="flex items-center gap-3 mb-1">
-                    <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                      <Clock className="w-5 h-5 text-yellow-600" />
+                <div className="bg-white border border-gray-200 rounded-full py-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer relative overflow-hidden">
+                  {/* Orange half circle on the left with gap */}
+                  <div className="absolute left-1 top-1 bottom-1 right-1 w-10 bg-orange-500 rounded-l-full"></div>
+                  <div className="flex items-center justify-between px-6 relative z-10">
+                    <div className="flex items-center gap-4 ml-8">
+                      <div>
+                        <span className="text-sm text-orange-700 font-semibold">Pending tasks</span>
+                        <div className="text-xs text-gray-800">Immediate attention required</div>
+                      </div>
                     </div>
-                    <span className="text-sm text-yellow-700 font-medium">2 pending tasks</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-3xl font-bold text-orange-500">2</span>
+                      <svg className="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </div>
-                  <div className="text-xs text-yellow-600 pl-11">Immediate attention required</div>
                 </div>
               </div>
 
@@ -190,6 +225,9 @@ function Landing() {
         <Sidebar
           activeSection={activeSection}
           setActiveSection={setActiveSection}
+          onNewChat={handleNewChat}
+          currentChatId={currentChatId}
+          onSelectChat={handleSelectChat}
         />
 
         <main className="flex-1 relative overflow-hidden">

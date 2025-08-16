@@ -82,6 +82,8 @@ const FormattedMessage = ({ content, isAgent }) => {
 
 function Layout() {
   const [activeSection, setActiveSection] = useState("ai-assistant");
+  const [currentChatId, setCurrentChatId] = useState(null);
+  const [currentChat, setCurrentChat] = useState(null);
 
   // Chat state management
   const [messages, setMessages] = useState([]);
@@ -97,6 +99,48 @@ function Layout() {
 
   // API Configuration (similar to your reference)
   const API_BASE_URL = "http://localhost:8080/api/agent";
+
+  // Chat management functions
+  const handleNewChat = (newChat) => {
+    setCurrentChatId(newChat.id);
+    setCurrentChat(newChat);
+    setMessages([]);
+    setContextId(null);
+    setIsInitializing(true);
+    initializeChat();
+  };
+
+  const handleSelectChat = (chat) => {
+    setCurrentChatId(chat.id);
+    setCurrentChat(chat);
+    // Load chat messages from localStorage or API
+    const storedMessages = localStorage.getItem(`chat_messages_${chat.id}`);
+    if (storedMessages) {
+      setMessages(JSON.parse(storedMessages));
+    } else {
+      setMessages([]);
+      initializeChat();
+    }
+  };
+
+  // Save messages when they change
+  useEffect(() => {
+    if (currentChatId && messages.length > 0) {
+      localStorage.setItem(`chat_messages_${currentChatId}`, JSON.stringify(messages));
+      
+      // Update chat title if it's still "New Chat"
+      const chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+      const chatIndex = chatHistory.findIndex(c => c.id === currentChatId);
+      if (chatIndex !== -1 && chatHistory[chatIndex].title === 'New Chat' && messages.length > 1) {
+        // Use first user message as title
+        const firstUserMessage = messages.find(m => m.type === 'user');
+        if (firstUserMessage) {
+          chatHistory[chatIndex].title = firstUserMessage.content.substring(0, 50) + (firstUserMessage.content.length > 50 ? '...' : '');
+          localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+        }
+      }
+    }
+  }, [messages, currentChatId]);
 
   // Helper functions
   const generateMessageId = () => {
@@ -126,6 +170,32 @@ function Layout() {
   useEffect(() => {
     initializeChat();
   }, []);
+
+  // Check task status function
+  const checkTaskStatus = async (taskId) => {
+    const requestBody = {
+      jsonrpc: "2.0",
+      id: generateRequestId(),
+      method: "task/status",
+      params: {
+        taskId: taskId
+      }
+    };
+
+    const response = await fetch(API_BASE_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  };
 
   // API call function
   const sendAPIMessage = async (messageText, messageContextId = null) => {
@@ -627,6 +697,9 @@ function Layout() {
         <Sidebar
           activeSection={activeSection}
           setActiveSection={setActiveSection}
+          onNewChat={handleNewChat}
+          currentChatId={currentChatId}
+          onSelectChat={handleSelectChat}
         />
 
         <main className="flex-1 relative overflow-hidden bg-gray-950">
