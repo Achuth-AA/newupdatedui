@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, Search, ChevronDown, Filter } from "lucide-react";
+import { X, Search, ChevronDown, Filter, MessageSquare, HelpCircle, Check, Flag } from "lucide-react";
 
 function AgentOutput({ onClose, agent }) {
   const { name } = agent;
@@ -11,6 +11,7 @@ function AgentOutput({ onClose, agent }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterOption, setFilterOption] = useState("All items");
   const [isVisible, setIsVisible] = useState(false);
+  const [expandedTestCase, setExpandedTestCase] = useState(null);
 
   useEffect(() => {
     // Trigger animation on mount
@@ -25,7 +26,19 @@ function AgentOutput({ onClose, agent }) {
       complexity: "Medium complexity",
       duration: "15 mins",
       status: "pending review",
-      statusColor: "orange"
+      statusColor: "orange",
+      description: "Verify that a user can successfully register with valid email, password, and personal information",
+      tags: ["registration", "happy path", "critical"],
+      preconditions: "User is on registration page",
+      dependencies: "None",
+      testSteps: [
+        "Enter valid email address",
+        "Enter strong password",
+        "Confirm password",
+        "Fill personal information",
+        "Click Register button"
+      ],
+      expectedResult: "User account created successfully, confirmation email sent"
     },
     {
       id: "TC002",
@@ -33,7 +46,17 @@ function AgentOutput({ onClose, agent }) {
       complexity: "Low complexity",
       duration: "10 mins",
       status: "approved",
-      statusColor: "blue"
+      statusColor: "blue",
+      description: "Verify system handles invalid email format during registration",
+      tags: ["registration", "validation", "negative"],
+      preconditions: "User is on registration page",
+      dependencies: "None",
+      testSteps: [
+        "Enter invalid email format",
+        "Fill other required fields",
+        "Click Register button"
+      ],
+      expectedResult: "Error message displayed for invalid email format"
     },
     {
       id: "TC003",
@@ -41,7 +64,18 @@ function AgentOutput({ onClose, agent }) {
       complexity: "Low complexity",
       duration: "10 mins",
       status: "needs revision",
-      statusColor: "red"
+      statusColor: "red",
+      description: "Verify password strength validation during registration",
+      tags: ["registration", "security", "validation"],
+      preconditions: "User is on registration page",
+      dependencies: "None",
+      testSteps: [
+        "Enter valid email",
+        "Enter weak password",
+        "Fill other fields",
+        "Click Register button"
+      ],
+      expectedResult: "Password strength error displayed"
     },
     {
       id: "TC004",
@@ -49,7 +83,17 @@ function AgentOutput({ onClose, agent }) {
       complexity: "Low complexity",
       duration: "10 mins",
       status: "pending approval",
-      statusColor: "orange"
+      statusColor: "orange",
+      description: "Verify duplicate email validation during registration",
+      tags: ["registration", "validation", "edge case"],
+      preconditions: "User with test email already exists",
+      dependencies: "Existing user account",
+      testSteps: [
+        "Enter existing email address",
+        "Fill other required fields",
+        "Click Register button"
+      ],
+      expectedResult: "Error message for duplicate email displayed"
     },
     {
       id: "TC005",
@@ -57,7 +101,17 @@ function AgentOutput({ onClose, agent }) {
       complexity: "Low complexity",
       duration: "10 mins",
       status: "needs revision",
-      statusColor: "red"
+      statusColor: "red",
+      description: "Verify mandatory field validation during registration",
+      tags: ["registration", "validation", "boundary"],
+      preconditions: "User is on registration page",
+      dependencies: "None",
+      testSteps: [
+        "Leave email field empty",
+        "Fill other required fields",
+        "Click Register button"
+      ],
+      expectedResult: "Required field validation error displayed"
     }
   ];
 
@@ -255,29 +309,106 @@ function AgentOutput({ onClose, agent }) {
               {/* Test Cases List */}
               <div className="space-y-3">
                 {testCases.map((testCase) => (
-                  <div key={testCase.id} className="bg-white border border-gray-200 rounded-2xl p-4 hover:shadow-md transition-shadow relative overflow-hidden">
-                    {/* Colored half circle on the left */}
-                    <div className={`absolute left-0 top-1 bottom-1 w-8 ${getStatusBgColor(testCase.statusColor)} rounded-l-2xl`}></div>
-                    
-                    <div className="flex items-center justify-between ml-6">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className="font-medium text-gray-900">{testCase.id}:</span>
-                          <span className="text-gray-900">{testCase.title}</span>
+                  <div key={testCase.id} className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-md transition-shadow">
+                    {/* Collapsed View */}
+                    <div 
+                      className="p-4 relative cursor-pointer"
+                      onClick={() => setExpandedTestCase(expandedTestCase === testCase.id ? null : testCase.id)}
+                    >
+                      {/* Colored half circle on the left */}
+                      <div className={`absolute left-0 top-1 bottom-1 w-8 ${getStatusBgColor(testCase.statusColor)} rounded-l-2xl`}></div>
+                      
+                      <div className="flex items-center justify-between ml-6">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <span className="font-medium text-gray-900">{testCase.id}:</span>
+                            <span className="text-gray-900">{testCase.title}</span>
+                          </div>
+                          <div className="flex items-center gap-4 text-sm text-gray-600">
+                            <span>{testCase.duration}</span>
+                            <span>•</span>
+                            <span>{testCase.complexity}</span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-4 text-sm text-gray-600">
-                          <span>{testCase.duration}</span>
-                          <span>•</span>
-                          <span>{testCase.complexity}</span>
+                        <div className="flex items-center gap-3">
+                          <span className={`${getStatusBgColor(testCase.statusColor)} text-white text-xs font-medium px-3 py-1 rounded-full`}>
+                            {testCase.status}
+                          </span>
+                          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${expandedTestCase === testCase.id ? 'rotate-180' : 'rotate-[-90deg]'}`} />
                         </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className={`${getStatusBgColor(testCase.statusColor)} text-white text-xs font-medium px-3 py-1 rounded-full`}>
-                          {testCase.status}
-                        </span>
-                        <ChevronDown className="w-4 h-4 text-gray-400 rotate-[-90deg]" />
                       </div>
                     </div>
+
+                    {/* Expanded View */}
+                    {expandedTestCase === testCase.id && (
+                      <div className="border-t border-gray-200 bg-gray-50 relative">
+                        {/* Extended colored bar for expanded section */}
+                        <div className={`absolute left-0 top-0 bottom-0 w-8 ${getStatusBgColor(testCase.statusColor)}`}></div>
+                        <div className="p-6 ml-8">
+                          {/* Tags */}
+                          <div className="flex gap-2 mb-4">
+                            {testCase.tags.map((tag, index) => (
+                              <span key={index} className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* Description */}
+                          <div className="mb-4">
+                            <p className="text-gray-800 text-sm">{testCase.description}</p>
+                          </div>
+
+                          {/* Preconditions and Dependencies */}
+                          <div className="grid grid-cols-2 gap-6 mb-4">
+                            <div>
+                              <h4 className="font-medium text-gray-900 text-sm mb-1">Preconditions</h4>
+                              <p className="text-gray-600 text-sm">{testCase.preconditions}</p>
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-gray-900 text-sm mb-1">Dependencies</h4>
+                              <p className="text-gray-600 text-sm">{testCase.dependencies}</p>
+                            </div>
+                          </div>
+
+                          {/* Test Steps */}
+                          <div className="mb-4">
+                            <h4 className="font-medium text-gray-900 text-sm mb-2">Test Steps</h4>
+                            <ol className="list-decimal list-inside space-y-1">
+                              {testCase.testSteps.map((step, index) => (
+                                <li key={index} className="text-gray-600 text-sm">{step}</li>
+                              ))}
+                            </ol>
+                          </div>
+
+                          {/* Expected Result */}
+                          <div className="mb-6">
+                            <h4 className="font-medium text-gray-900 text-sm mb-1">Expected Result</h4>
+                            <p className="text-gray-600 text-sm">{testCase.expectedResult}</p>
+                          </div>
+
+                          {/* Action Buttons */}
+                          <div className="flex gap-3">
+                            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                              <MessageSquare className="w-3 h-3" />
+                              Comment
+                            </button>
+                            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                              <HelpCircle className="w-3 h-3" />
+                              Ask Question
+                            </button>
+                            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                              <Check className="w-3 h-3" />
+                              Approve
+                            </button>
+                            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                              <Flag className="w-3 h-3" />
+                              Flag Issue
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
